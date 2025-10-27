@@ -1,0 +1,96 @@
+REST.txt
+
+예전 웹 : 서버사이드에서 데이터를 생성 연결된 뷰페이지에서 출력
+		  => 일반적인 웹 / PC, 데스크탑
+요즘 웹 : 서버에서 데이터를 생성해서 각각에 필요한곳(PC/Mobile/tab)에 전달
+		  => 모바일 기기
+		  
+REST : REpresentational State Transfer 
+	   => 자원을 이름으로 구분해서 상태를 주고 받는 개발 방법(API)
+	   => 하나의 URI는 하나의 고유한 리소스를 가지는 형태
+	   => 'URL을 설계하는 방식' => REST API/RESTFul
+	   
+REST API 설계 제약조건
+1) Client-Server(클라이언트-서버구조)
+	- 클라이언트와 서버의 동작을 명확하게 구분해야 한다.
+			 UI			DB
+
+2) Stateless (무상태성)
+	- 서버는 요청시에 클라이언트의 상태정보를 저장 X 
+	- 모든 요청에는 필요한 정보를 모두 가지고 요청
+
+3) Cacheable (캐시처리 가능)
+	- 응답 데이터는 캐시 가능여부가 명시되어야함
+	- 클라이언트는 이 정보를 재활용
+
+4) Uniform Interface (인터페이스 일관성)
+	- 일관된 방식으로 리소스에 접근해야함
+	- URL로 자원을 식별 / 데이터의 표현 (JSON,XML) / 자기 서술적 메세지(Content-Type)
+	
+5) Layered System (계층화된 시스템)
+	- 클라이언트는 자신이 직접 연결된 서버외의 중간서버(프록시서버, 게이트웨이)를 인식 하면 안됨
+	
+6) Code on Demand
+	- 서버는 클라이언트에 실행가능한 코드를 전송가능(ex 자바스크립트)
+	=> 대부분의 REST API에서는 해당 제약조건 사용X
+	
+* REST 사용 이유
+	- HTTP 프로토콜 기반으로 동작
+	- CRUD 기능을 HTTP 메서드 형태로 구현가능(GET, POST, UPDATE, DELETE)
+	- 무상태성(stateless)을 지키고 있기 때문에 이전의 클라이언트 요청 정보를 저장하지 않는다 => 독립적으로 운영/관리가 쉬움, 확장성 높음
+	- 서버와 클라이언트를 완전히 분리 (독립적인 개발)
+	- 자유로운 데이터 포멧 (XML, JSON) 사용
+	
+* REST 사용할때 어려운점
+	- 무상태성의 어려움
+	- 표준화된 인터페이스 설계 어려움
+	- 자유로운 데이터 포멧을 사용하기 위한 특정 구조의 타입 필요
+	
+	https://learn.microsoft.com/ko-kr/azure/architecture/best-practices/api-design
+	
+* REST API 사용법
+	1) URL에는 동사를 쓰지말고, 리소스(자원)를 표시할 수 있어야함
+		=> 명사의 형태로 주소를 생성
+		ex) http://localhost:8088/orders (명사O)
+		ex) http://localhost:8088/create-order (동사X)
+		
+	2) 동사표현은 HTTP 메서드로 구현
+	   => GET(조회), POST(생성), UPDATE(수정), DELETE(삭제)
+		http://localhost:8088/orders / GET => 주문 조회 기능
+		http://localhost:8088/orders / POST => 주문 생성 기능
+		http://localhost:8088/orders / UPDATE => 주문 수정 기능
+		http://localhost:8088/orders / DELETE => 주문 삭제 기능
+	
+	3) /를 사용해서 계층 관계를 표시
+		* 컬렉션/항목/컬렉션 보다 더 복잡한 리소스 URI가 필요하지 않습니다.
+		
+		/animals
+		/animals/dog
+		/animals/dog/1					(O)
+		/customers/1/orders/99/products (X)
+		
+	4) 주소의 마지막 문자로 /를 포함 X
+		http://localhost:8088/orders	(O)
+		http://localhost:8088/orders/	(X)
+		
+	5) (_)는 주소에 사용X, (-)는 주소에 사용 O => 가독성 증가
+	6) 대부분의 주소는 소문자로 작성
+	7) 주소줄에는 파일의 확장자를 포함 X
+	
+* REST방식 개발시 자원을 Collection, Document 형태로 구분
+	Document = 문서 = 객체
+	Collection = 문서들의 집합 = 객체들의 집합
+	=> 둘 다, 리소스라고 부름
+	=> 주소를 생성할 때 표현 해야할 리소스가 Document, Collection인지 구분
+		Document =>  명사 단수
+		Collection => 명사 복수
+		
+	ex) http://localhost:8088/sports/soccer/players
+		
+* 스프링 => REST 방식 개발
+	스프링 3.X.X - @ResponseBody 사용
+	스프링 4.X.X - @RestController 사용
+	
+	
+		
+		
