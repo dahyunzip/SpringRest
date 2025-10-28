@@ -22,4 +22,10 @@ public class SampleController {
 		logger.info(" /test1 -> test1() 실행! ");
 		return "ITWILL";
 	}
+	
+	// http://localhost:8088/test2
+	@RequestMapping(value="/test2", method=RequestMethod.GET)
+	public void test2() throws Exception{
+		logger.info(" /test2 -> test2() 실행! ");
+	}
 }
