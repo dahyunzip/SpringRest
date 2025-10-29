@@ -11,17 +11,33 @@
 		//정보 출력 버튼 클릭시, REST 컨트롤러에서 JSON 정보를 가져오기
 		$('#btnRead').click(function(){
 			$.ajax({
-				url : "${contextPath}/rest/read",
+				//url : "${contextPath}/rest/read",
+				url : "${contextPath}/rest/test7",
 				type : "GET",
-				success : function(result){
-					alert("정보 출력 성공");
+				success : function(result, a, b){
+					console.log(result); // 처리 결과데이터(서버에서 받은 데이터)
+					console.log("textStatus : " + a); // 상태 코드의 텍스트 출력
+					console.log("jqXHR : " + b); // XMLHttpRequest 객체
+					console.log(b.status); // XMLHttpRequest 객체의 상태코드
+					
+					if(b.status == 200){
+						// 서버에서 처리된 결과가 정상일때
+						alert(" 정상처리 완료! ");
+					}
+					
+					if(b.status == 404){
+						// 서버에서 처리된 결과가 정상일때
+						alert(" 에러 발생! ");
+					}
+					
+					//alert("정보 출력 성공");
 					//alert(result); [object]
-					console.log(result);
+					//console.log(result);
 					
 					// 기존의 입력창에 가져온 정보를 출력
-					$('#inputNumber').val(result.bno);
-					$('#inputName').val(result.name);
-					$('#inputTitle').val(result.title);
+					//$('#inputNumber').val(result.bno);
+					//$('#inputName').val(result.name);
+					//$('#inputTitle').val(result.title);
 				}
 			})
 		});
@@ -65,6 +81,7 @@
 </script>
 </head>
 <body>
+	contextPath : ${contextPath}<br>
 	<h1>/views/test2.jsp</h1>
 	<h2>REST 컨트롤러를 호출(비동기방식)</h2>
 	<h2>정보입력(Create) 동작 구현</h2>

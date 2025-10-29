@@ -1,6 +1,5 @@
 package com.itwillbs.controller;
 
-import java.nio.file.WatchEvent.Kind;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,12 +7,14 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.itwillbs.domain.SampleVO;
@@ -153,4 +154,113 @@ public class SampleRESTController {
 		
 		return vo;
 	}
+	
+	@RequestMapping(value="/test6", method=RequestMethod.GET)
+	public ResponseEntity<Void> restTest6() throws Exception{
+		logger.info(" /rest/test6 -> restTest6() 실행! ");
+		logger.info(" 기존의 리턴정보는 데이터만 전달! ");
+		logger.info(" => 데이터 처리 결과(상태)를 알 수 없음!!!");
+		
+		// ResponseEntity<T> : 
+		// HTTP 요청의 결과(데이터, HTTP 상태코드)를 처리하는 객체
+		
+		ResponseEntity<Void> respEntity = 
+				//new ResponseEntity<>(HttpStatus.LOCKED);
+				 new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		// Void : 반환할 타입이 없다.
+		
+		// return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return respEntity;
+	}
+	
+	@RequestMapping(value="/test7", method=RequestMethod.GET)
+	public ResponseEntity<String> restTest7() throws Exception{
+		logger.info(" /rest/test7 -> restTest7() 실행 ");
+		ResponseEntity<String> respEntity = 
+				// new ResponseEntity<String>("createOK", HttpStatus.NOT_FOUND);
+				// NOT_FOUND 하면 받는 쪽에서 처리가 안됨.
+				new ResponseEntity<String>("createOK", HttpStatus.OK);
+				// new ResponseEntity<String>("createOK", HttpStatus.BAD_REQUEST);
+				// new ResponseEntity<String>("createOK", HttpStatus.BAD_GATEWAY);
+		logger.info(" createOK 정보를 가지고 200 상태 코드를 전달");
+		return respEntity;
+		
+	}
+	
+	@RequestMapping(value="/test8", method=RequestMethod.GET)
+	public ResponseEntity<SampleVO> restTest8() throws Exception{
+		logger.info(" /rest/test8 -> restTest8() 실행 ");
+		
+		SampleVO vo = new SampleVO();
+		vo.setBno(100);
+		vo.setName("홍길동");
+		vo.setTitle("안녕하세요?");
+		// => 임시 생성 객체 (서비스로부터 전달받은 객체 정보)
+		
+		ResponseEntity<SampleVO> respEntity = null;
+		if(vo != null) {
+			respEntity = new ResponseEntity<SampleVO>(vo, HttpStatus.OK);
+		}else { // null
+			respEntity = new ResponseEntity<SampleVO>(vo, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+//		ResponseEntity<SampleVO> respEntity = 
+//				new ResponseEntity<SampleVO>(vo, HttpStatus.OK);
+		
+		logger.info(" SampleVO 객체 정보를 가지고 200 상태 코드를 전달");
+		return respEntity;
+		
+	}
+	
+	@RequestMapping(value="/test9", method=RequestMethod.GET)
+	public ResponseEntity<List<SampleVO>> restTest9() throws Exception{
+		   //ResponseEntity<Map<Integerm SampleVO>>
+		logger.info(" /rest/test9 -> restTest9() 실행 ");
+		
+		List<SampleVO> sampleList = new ArrayList<>();
+		
+		for(int i=0; i<10; i++) {
+			SampleVO vo = new SampleVO();
+			vo.setBno(100+i);
+			vo.setName("홍길동"+i);
+			vo.setTitle("안녕하세요?"+i);
+			// => 임시 생성 객체 (서비스로부터 전달받은 객체 정보)
+
+			sampleList.add(vo);
+		}
+		
+		ResponseEntity<List<SampleVO>> respEntity = null;
+		
+		if(sampleList != null) {
+			respEntity = new ResponseEntity<List<SampleVO>>(sampleList, HttpStatus.OK);
+		}else { // null
+			respEntity = new ResponseEntity<List<SampleVO>>(sampleList, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+//		ResponseEntity<SampleVO> respEntity = 
+//				new ResponseEntity<SampleVO>(vo, HttpStatus.OK);
+		
+		logger.info(" SampleVO 객체 정보를 가지고 200 상태 코드를 전달");
+		return respEntity;
+		
+	}
+	
+	@RequestMapping(value="/test10", method=RequestMethod.GET)
+	public ResponseEntity restTest10() throws Exception{
+		logger.info(" /rest/test10 -> restTest10() 실행 ");
+		
+		// 서비스, DB처리 동작 호출
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "text/html; charset=UTF-8");
+		
+		String msg = "<script>";
+		msg += " alert('자바스크립트 코드 실행');";
+		msg += " location.href='/test2';";
+		msg += "</script>";
+		
+		return new ResponseEntity(msg, headers, HttpStatus.CREATED);
+		
+	}
+	
 }
