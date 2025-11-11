@@ -117,3 +117,18 @@ REST API 설계 제약조건
   - 502 : 게이트웨이 장비, 프록시서버 상태 문제 (과부화)
   - 503 : 일시적인 과부화, 서비스 중단상태(리부팅)
   - 504 : 지정된 처리시간이 지나서 처리불가
+  
+* API (Application Programming Interface)
+  => 소프트웨어 끼리 상호작용하는 규약(규칙)
+  => 식당에서 메뉴판
+  
+  표준화/편의성/보안/확장
+
+* API 사용
+  [클라이언트] -> 요청 -> [API 서버] -> DB조회 -> 응답 -> [클라이언트]
+  [클라이언트] -> 요청 -> [REST 컨트롤러] -> [API 서버] -> DB조회 -> 응답 -> -> [REST 컨트롤러] [클라이언트]
+  
+Access-Control-Allow-Origin=[*]  
+* CORS(Cross-Origin Resource Sharing) 속성이 웹 브라우저에 허용이 되어야지만 AJAX 접근 가능
+  => 대부분의 API는 허용 X 
+  - AJAX 접근 X, 백엔드 서버 통한 접근 O 
