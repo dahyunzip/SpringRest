@@ -132,3 +132,22 @@ Access-Control-Allow-Origin=[*]
 * CORS(Cross-Origin Resource Sharing) 속성이 웹 브라우저에 허용이 되어야지만 AJAX 접근 가능
   => 대부분의 API는 허용 X 
   - AJAX 접근 X, 백엔드 서버 통한 접근 O 
+  
+  
+* ChatGPT
+curl https://api.openai.com/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $OPENAI_API_KEY" \
+  -d '{
+    "model": "gpt-5",
+    "messages": [
+      {
+        "role": "developer",
+        "content": "You are a helpful assistant."
+      },
+      {
+        "role": "user",
+        "content": "Hello!"
+      }
+    ]
+  }'
